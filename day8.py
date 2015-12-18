@@ -19,13 +19,20 @@
 # For example, given the four strings above, the total number of characters of string code (2 + 5 + 10 + 6 = 23) minus the total number of characters in memory for string values (0 + 3 + 7 + 1 = 11) is 23 - 11 = 12.
 
 import re
+import fileinput
+
 escapeRegex = re.compile(r'\\([\\"])')
+quoteRegex = re.compile(r'["\\]')
 hexRegex = re.compile(r'\\x[a-f0-9]{2}')
 
-def countchars(input):
+def inputMinusByte(input):
     stripped = input[1:-1]
     s = hexRegex.sub(r'-', escapeRegex.sub(r'-', stripped))
     return len(input) - len(s)
+
+def encodedMinuseInput(input):
+    s = quoteRegex.sub(r'--', hexRegex.sub(r'-----', input))
+    return len(s) + 2 - len(input)
 
 # lines = [
 #     '""',
@@ -34,6 +41,7 @@ def countchars(input):
 #     '"\\x27"',
 # ]
 
-lines = [line.rstrip('\n') for line in open('day8.input.txt')]
+lines = [line.strip() for line in fileinput.input()]
 
-print reduce(lambda acc, line: acc + countchars(line), lines, 0)
+print reduce(lambda acc, line: acc + inputMinusByte(line), lines, 0)
+print reduce(lambda acc, line: acc + encodedMinuseInput(line), lines, 0)
