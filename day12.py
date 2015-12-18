@@ -17,31 +17,36 @@
 import json
 import numbers
 
-def nestedSum(x):
+
+def nestedSum(x, ignoreRed):
     if isinstance(x, dict):
-        return nestedSumHelper(list(x.values()))
+        values = list(x.values())
+        return 0 if "red" in values and ignoreRed else nestedSumHelper(values, ignoreRed)
     elif isinstance(x, list):
-        return nestedSumHelper(x)
+        return nestedSumHelper(x, ignoreRed)
     elif isinstance(x, numbers.Number):
         return x
     else:
         return 0
 
-def nestedSumHelper(listObj):
-    return reduce(lambda total, x: total + nestedSum(x), listObj, 0)
 
-def parse(jsonStr):
+def nestedSumHelper(listObj, ignoreRed):
+    return reduce(lambda total, x: total + nestedSum(x, ignoreRed), listObj, 0)
+
+
+def parse(jsonStr, ignoreRed=False):
     jsonObj = json.loads(jsonStr)
-    return nestedSum(jsonObj)
+    return nestedSum(jsonObj, ignoreRed)
 
-print parse('[1,2,3]')
-print parse('{"a":2,"b":4}')
-print parse('[[[3]]]')
-print parse('{"a":{"b":4},"c":-1}')
-print parse('{"a":[-1,1]}')
-print parse('[-1,{"a":1}]')
+# print parse('[1,2,3]')
+# print parse('{"a":2,"b":4}')
+# print parse('[[[3]]]')
+# print parse('{"a":{"b":4},"c":-1}')
+# print parse('{"a":[-1,1]}')
+# print parse('[-1,{"a":1}]')
 
 import fileinput
 
 for line in fileinput.input():
-    print parse(line)
+    print(parse(line))
+    print(parse(line, ignoreRed=True))
