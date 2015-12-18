@@ -94,4 +94,7 @@ console.log(validPassword('hijklmmn'));
 console.log(validPassword('abbceffg'));
 console.log(validPassword('abbcegjk'));
 console.log(nextPassword('abcdefgh'));
-console.log(nextPassword('hepxcrrq'));
+// part1
+// console.log(nextPassword('hepxcrrq'));
+// part2
+console.log(nextPassword(nextPassword('hepxcrrq')));
