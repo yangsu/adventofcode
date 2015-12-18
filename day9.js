@@ -24,21 +24,21 @@ What is the distance of the shortest route?
 */
 const _ = require('lodash');
 
-function bfs(currentCity, distSoFar, visited, adjacencyMap) {
+function bfs(currentCity, distSoFar, visited, adjacencyMap, f) {
   const destinations = adjacencyMap[currentCity];
   const notYetVisited = _.filter(destinations, ({city}) => !_.contains(visited, city));
   if (!_.isEmpty(notYetVisited)) {
     const newVisited = visited.concat(currentCity);
     const results = notYetVisited.map(({city, dist}) => {
-      return bfs(city, distSoFar + dist, newVisited, adjacencyMap);
+      return bfs(city, distSoFar + dist, newVisited, adjacencyMap, f);
     });
-    return _.min(results);
+    return f(results);
   }
 
   return distSoFar;
 }
 
-function shortestPath(inputs) {
+function bestPath(inputs, f = _.min) {
   const adjacencyMap = {};
 
   inputs.forEach((input) => {
@@ -51,9 +51,9 @@ function shortestPath(inputs) {
   });
 
   const allMins = Object.keys(adjacencyMap).map((city) => {
-    return bfs(city, 0, [city], adjacencyMap);
+    return bfs(city, 0, [city], adjacencyMap, f);
   });
-  return _.min(allMins);
+  return f(allMins);
 }
 
 
@@ -88,4 +88,7 @@ const inputs = [
   'Tristram to Arbre = 90',
 ];
 
-console.log(shortestPath(inputs));
+// part 1
+console.log(bestPath(inputs));
+// part 2
+console.log(bestPath(inputs, _.max));
