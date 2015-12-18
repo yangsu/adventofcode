@@ -383,5 +383,12 @@ const instructions = [
 
 import Emulator from './day7.emulator';
 const emulator = new Emulator();
+// part 1
 emulator.executeInstructions(instructions);
 console.log(emulator.getWireValueById('a'));
+// Part 2
+instructions.push('46065 -> b');
+emulator.clearCache();
+emulator.executeInstructions(instructions);
+console.log(emulator.getWireValueById('a'));
+

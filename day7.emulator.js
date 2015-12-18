@@ -1,8 +1,7 @@
-const cache = {};
-
 class Wire {
-  constructor({identifier}) {
+  constructor({identifier, cache}) {
     this.identifier = identifier;
+    this.cache = cache;
   }
 
   addInput(input) {
@@ -11,10 +10,10 @@ class Wire {
 
   get value() {
     const identifier = this.identifier;
-    if (!(identifier in cache)) {
-      cache[identifier] = this.input.value;
+    if (!(identifier in this.cache)) {
+      this.cache[identifier] = this.input.value;
     }
-    return cache[identifier];
+    return this.cache[identifier];
   }
 }
 
@@ -80,10 +79,11 @@ const REGEX = {
 export default class CircuitEmulator {
   constructor() {
     this.wires = {};
+    this.cache = {};
   }
 
   getWireById(identifier) {
-    this.wires[identifier] = this.wires[identifier] || new Wire({identifier});
+    this.wires[identifier] = this.wires[identifier] || new Wire({identifier, cache: this.cache});
     return this.wires[identifier];
   }
 
@@ -127,5 +127,9 @@ export default class CircuitEmulator {
 
   getWireValueById(id) {
     return this.wires[id].value;
+  }
+
+  clearCache() {
+    Object.keys(this.cache).forEach(key => delete this.cache[key]);
   }
 }
