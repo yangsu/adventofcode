@@ -45,11 +45,20 @@ def parse(line):
     aunt[matches.group(6)] = int(matches.group(7))
     return aunt
 
-def match(aunt, criteria):
+def match(aunt, criteria, outdated=False):
+    count = 0
     for k, value in aunt.iteritems():
         if k is not 'number':
-            if value is not criteria[k]:
+            criteriaValue = criteria[k]
+            if outdated and k in ['cats', 'trees']:
+                if value <= criteriaValue:
+                    return False
+            elif outdated and k in ['pomeranians', 'goldfish']:
+                if value >= criteriaValue:
+                    return False
+            elif value is not criteriaValue:
                 return False
+
     return True
 
 criteria = {
@@ -67,5 +76,9 @@ criteria = {
 
 for line in fileinput.input():
     aunt = parse(line)
+    # part 1
     if match(aunt, criteria):
+        print aunt
+    # part 2
+    if match(aunt, criteria, outdated=True):
         print aunt
