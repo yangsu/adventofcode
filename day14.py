@@ -47,12 +47,31 @@ def parseFact(fact):
 
 contestants = [parseFact(fact) for fact in facts]
 
-def byDistance(time):
-    def byDistanceForTime(contestant):
-        fullCycleTime = contestant['limit'] + contestant['rest']
-        cycles = time / fullCycleTime
-        distance = contestant['speed'] * (contestant['limit'] * cycles + min(time % fullCycleTime, contestant['limit']))
-        return distance
-    return byDistanceForTime
+maxTime = 2503
 
-print max(map(byDistance(2503), contestants))
+# Part 1
+def distanceAtT(contestant, time):
+    fullCycleTime = contestant['limit'] + contestant['rest']
+    cycles = time / fullCycleTime
+    distance = contestant['speed'] * (contestant['limit'] * cycles + min(time % fullCycleTime, contestant['limit']))
+    return distance
+
+# print max(map(lambda c: distanceAtT(c, maxTime), contestants))
+
+# Part 2
+scores = [0 for c in contestants]
+for t in xrange(1, maxTime + 1):
+    maxIndices = []
+    maxDistance = 0
+    for index, contestant in enumerate(contestants):
+        distance = distanceAtT(contestant, t)
+        if distance > maxDistance:
+            maxIndices = [index]
+            maxDistance = distance
+        elif distance is maxDistance:
+            maxIndices.append(index)
+
+    for i in maxIndices:
+        scores[i] += 1
+
+print max(scores)
