@@ -140,4 +140,13 @@ function computeBestArrangement(persons) {
     .value();
 }
 
+// Part 1
+// console.log(computeBestArrangement(Object.keys(matrix)));
+// Part 2
+
+matrix.me = {};
+Object.keys(matrix).forEach(person => {
+  matrix[person].me = 0;
+  matrix.me[person] = 0;
+});
 console.log(computeBestArrangement(Object.keys(matrix)));
