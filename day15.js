@@ -60,6 +60,12 @@ function computeScore(cookieConfiguration) {
   return _.values(scores).map(score => Math.max(score, 0)).reduce((a, b) => a * b);
 }
 
+function computeCalories(cookieConfiguration) {
+  return cookieConfiguration.reduce((calories, {cookie, count}) => {
+    return calories + cookies[cookie].calories * count;
+  }, 0);
+}
+
 function generateCookieConfigurations(listOfCookies, total) {
   if (listOfCookies.length === 0) {
     return listOfCookies;
@@ -79,4 +85,7 @@ function generateCookieConfigurations(listOfCookies, total) {
 }
 
 const configurations = generateCookieConfigurations(Object.keys(cookies), maxCookies);
-console.log(_.max(configurations.map(computeScore)));
+// part 1
+// console.log(_.max(configurations.map(computeScore)));
+// part 2
+console.log(_.max(configurations.filter(c => computeCalories(c) === 500).map(computeScore)));
