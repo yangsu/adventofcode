@@ -29,15 +29,16 @@ def lookAndSay(numStr):
         output += str(count) + character
     return output
 
-print lookAndSay('1')
-print lookAndSay('11')
-print lookAndSay('21')
-print lookAndSay('1211')
-print lookAndSay('111221')
-print lookAndSay('1321131112')
+print(lookAndSay('1'))
+print(lookAndSay('11'))
+print(lookAndSay('21'))
+print(lookAndSay('1211'))
+print(lookAndSay('111221'))
 
-s = '1321131112'
-for x in xrange(40):
-    s = lookAndSay(s)
+def findLenForN(s, n):
+    for x in xrange(n):
+        s = lookAndSay(s)
+    return len(s)
 
-print s, len(s)
+print(findLenForN('1321131112', 40))
+print(findLenForN('1321131112', 50))
