@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb/base",
+  "rules": {
+    "object-curly-spacing": [
+      2,
+      "never"
+    ],
+    "no-unused-vars": [
+      2,
+      {
+        "vars": "local",
+        "args": "after-used",
+        "varsIgnorePattern": "^_"
+      }
+    ]
+  }
+}
