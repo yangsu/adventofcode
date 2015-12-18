@@ -16,14 +16,17 @@ def md5(input):
     h.update(input)
     return h.hexdigest()
 
-def findkey(input):
+def findkey(input, prefix):
     i = 0
     key = input + str(i)
-    while not md5(key).startswith('00000'):
+    while not md5(key).startswith(prefix):
         i += 1
         key = input + str(i)
     return i
 
 # print findkey('abcdef')
 # print findkey('pqrstuv')
-print findkey('ckczppom')
+# Part 1
+# print findkey('ckczppom', '00000')
+# Part 2
+print findkey('ckczppom', '000000')
