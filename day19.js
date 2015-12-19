@@ -1,3 +1,5 @@
+/* eslint-disable no-loop-func */
+
 /*
 --- Day 19: Medicine for Rudolph ---
 
@@ -34,16 +36,14 @@ const readline = require('readline').createInterface({
   input: process.stdin,
 });
 
-const replacementsMap = {};
-
+const replacements = [];
 const regex = /(\w+) => (\w+)/;
 let input;
 
 function parse(line) {
   if (regex.test(line)) {
     const [_match, source, replacement] = line.match(regex);
-    replacementsMap[source] = replacementsMap[source] || [];
-    replacementsMap[source].push(replacement);
+    replacements.push({source, replacement});
   } else if (line.length) {
     input = line;
   }
@@ -64,18 +64,55 @@ function replaceAtIndex(string, source, replacement, index) {
 }
 
 function computeCombinations(sequence) {
-  const allCombinatins = _.reduce(replacementsMap, (combinations, replacements, source) => {
-    return combinations.concat(findAllIndices(sequence, source).reduce((list, index) => {
-      return list.concat(replacements.map(replacement => {
-        return replaceAtIndex(sequence, source, replacement, index);
-      }));
-    }, []));
+  const allCombinatins = _.reduce(replacements, (combinations, {source, replacement}) => {
+    return combinations.concat(findAllIndices(sequence, source).map(index => {
+      return replaceAtIndex(sequence, source, replacement, index);
+    }));
   }, []);
   return _.uniq(allCombinatins);
 }
 
-readline.on('line', parse);
+function findCandidatesSubtitutions(text) {
+  return _.chain(replacements)
+    .filter(({replacement}) => text.indexOf(replacement) >= 0)
+    .sortBy(({replacement}) => replacement.length)
+    .reverse()
+    .value();
+}
 
+function computeHops(start, destination) {
+  const visited = [start];
+  const queue = [{string: start, count: 0}];
+  const solution = [];
+  const stack = [];
+
+  while (queue.length) {
+    const {string, count} = queue.shift();
+    if (string === destination) {
+      return count;
+    }
+
+    const candidates = findCandidatesSubtitutions(string)
+      .map(({source, replacement}) => ({
+        string: string.replace(replacement, source),
+        count: count + 1,
+      }))
+      .filter((candidate) => !_.contains(visited, candidate.string));
+
+    let next = _.first(candidates);
+    stack.push(..._.rest(candidates));
+    if (!next) { // no candidates/dead end
+      solution.pop();
+      next = stack.pop();
+    }
+    visited.push(next.string);
+    queue.push(next);
+    solution.push(next);
+  }
+}
+
+readline.on('line', parse);
 readline.on('close', () => {
   console.log(computeCombinations(input).length);
+  console.log(computeHops(input, 'e'));
 });
