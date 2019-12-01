@@ -126,4 +126,3 @@ export class RGPSimulator {
     return _.max(costs);
   }
 }
-

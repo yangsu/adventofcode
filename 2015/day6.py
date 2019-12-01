@@ -66,5 +66,3 @@ for line in fileinput.input():
     )
 
 print count()
-
-

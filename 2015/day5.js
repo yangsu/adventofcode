@@ -80,5 +80,3 @@ readline.on('close', () => {
   console.log(countNaughtyOrNice(lines, naughtyOrNice));
   console.log(countNaughtyOrNice(lines, naughtyOrNice2));
 });
-
-

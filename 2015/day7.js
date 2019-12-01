@@ -391,4 +391,3 @@ instructions.push('46065 -> b');
 emulator.clearCache();
 emulator.executeInstructions(instructions);
 console.log(emulator.getWireValueById('a'));
-
