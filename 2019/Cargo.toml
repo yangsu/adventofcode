@@ -1,0 +1,7 @@
+[package]
+name = "2019"
+version = "0.1.0"
+authors = ["Yang Su <yang@quip.com>"]
+edition = "2018"
+
+[dependencies]
