@@ -3,12 +3,28 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-pub fn day2(filename: impl AsRef<Path>) -> Vec<usize> {
+pub fn part1(filename: impl AsRef<Path>) -> Vec<usize> {
     let mut program = read_ints(filename);
     program[1] = 12;
     program[2] = 2;
     execute(&mut program);
     return program;
+}
+
+pub fn part2(filename: impl AsRef<Path>) -> (usize, usize) {
+    let program = read_ints(filename);
+    for noun in 0..100 {
+        for verb in 0..100 {
+            let mut copy = program.clone();
+            copy[1] = noun;
+            copy[2] = verb;
+            execute(&mut copy);
+            if copy[0] == 19690720 {
+                return (noun, verb);
+            }
+        }
+    }
+    return (100, 100);
 }
 
 #[test]
