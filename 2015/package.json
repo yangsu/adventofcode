@@ -6,7 +6,7 @@
   "dependencies": {
     "babel": "^6.3.13",
     "babel-preset-es2015": "^6.3.13",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.19"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
